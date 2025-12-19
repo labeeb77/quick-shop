@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
+
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Check auth status
+    context.read<AuthBloc>().add(const CheckAuthStatus());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthAuthenticated) {
+          // User is logged in, navigate to home
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              context.go('/home');
+            }
+          });
+        } else if (state is AuthUnauthenticated) {
+          // User is not logged in, navigate to login
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              context.go('/login');
+            }
+          });
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // App Logo or Icon
+              Icon(
+                Icons.shopping_bag,
+                size: 80,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Quick Shop',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 48),
+              const CircularProgressIndicator(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
