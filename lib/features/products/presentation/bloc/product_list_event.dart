@@ -11,3 +11,16 @@ class LoadProducts extends ProductListEvent {
   const LoadProducts();
 }
 
+class SearchProducts extends ProductListEvent {
+  final String query;
+
+  const SearchProducts(this.query);
+
+  @override
+  List<Object> get props => [query];
+}
+
+class ClearSearch extends ProductListEvent {
+  const ClearSearch();
+}
+

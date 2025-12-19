@@ -62,19 +62,24 @@ class _ProductListPageState extends State<ProductListPage> {
               controller: _searchController,
               hintText: 'Search for products',
               onClear: () {
-                setState(() {
-                  _searchController.clear();
-                });
-                // TODO: Implement search functionality
+                context.read<ProductListBloc>().add(const ClearSearch());
               },
               onChanged: (value) {
-                // TODO: Implement search functionality
+                context.read<ProductListBloc>().add(SearchProducts(value));
               },
             ),
           ),
           // Product grid
           Expanded(
-            child: BlocBuilder<ProductListBloc, ProductListState>(
+            child: BlocConsumer<ProductListBloc, ProductListState>(
+              listener: (context, state) {
+                // Sync search controller with bloc state
+                if (state is ProductListLoaded && state.searchQuery.isEmpty) {
+                  if (_searchController.text.isNotEmpty) {
+                    _searchController.clear();
+                  }
+                }
+              },
               builder: (context, state) {
                 if (state is ProductListLoading) {
                   return const Center(
@@ -85,24 +90,47 @@ class _ProductListPageState extends State<ProductListPage> {
                     ),
                   );
                 } else if (state is ProductListLoaded) {
-                  if (state.products.isEmpty) {
+                  final productsToShow = state.filteredProducts;
+                  final hasSearchQuery = state.searchQuery.isNotEmpty;
+
+                  if (productsToShow.isEmpty) {
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.shopping_bag_outlined,
+                            hasSearchQuery
+                                ? Icons.search_off
+                                : Icons.shopping_bag_outlined,
                             size: 80,
                             color: AppColors.textHint.withOpacity(0.5),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeLarge),
-                          const Text(
-                            'No products available',
-                            style: TextStyle(
+                          Text(
+                            hasSearchQuery
+                                ? 'No products found for "${state.searchQuery}"'
+                                : 'No products available',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
                               fontSize: Dimensions.fontSizeLarge,
                               color: AppColors.textSecondary,
                             ),
                           ),
+                          if (hasSearchQuery) ...[
+                            const SizedBox(height: Dimensions.paddingSizeDefault),
+                            TextButton(
+                              onPressed: () {
+                                context.read<ProductListBloc>().add(const ClearSearch());
+                                _searchController.clear();
+                              },
+                              child: const Text(
+                                'Clear search',
+                                style: TextStyle(
+                                  color: AppColors.authPrimary,
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     );
@@ -120,9 +148,9 @@ class _ProductListPageState extends State<ProductListPage> {
                           childAspectRatio:
                               0.65, // Taller cards to prevent overflow
                         ),
-                    itemCount: state.products.length,
+                    itemCount: productsToShow.length,
                     itemBuilder: (context, index) {
-                      final product = state.products[index];
+                      final product = productsToShow[index];
                       return ProductCard(product: product);
                     },
                   );

@@ -11,6 +11,8 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     required this.getProducts,
   }) : super(ProductListInitial()) {
     on<LoadProducts>(_onLoadProducts);
+    on<SearchProducts>(_onSearchProducts);
+    on<ClearSearch>(_onClearSearch);
   }
 
   Future<void> _onLoadProducts(
@@ -22,8 +24,50 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 
     result.fold(
       (failure) => emit(ProductListError(failure.message)),
-      (products) => emit(ProductListLoaded(products)),
+      (products) => emit(ProductListLoaded(products, filteredProducts: products)),
     );
+  }
+
+  void _onSearchProducts(
+    SearchProducts event,
+    Emitter<ProductListState> emit,
+  ) {
+    if (state is! ProductListLoaded) return;
+
+    final currentState = state as ProductListLoaded;
+    final query = event.query.toLowerCase().trim();
+
+    if (query.isEmpty) {
+      emit(currentState.copyWith(
+        filteredProducts: currentState.products,
+        searchQuery: '',
+      ));
+      return;
+    }
+
+    final filtered = currentState.products.where((product) {
+      return product.title.toLowerCase().contains(query) ||
+          product.description.toLowerCase().contains(query) ||
+          product.category.toLowerCase().contains(query);
+    }).toList();
+
+    emit(currentState.copyWith(
+      filteredProducts: filtered,
+      searchQuery: event.query,
+    ));
+  }
+
+  void _onClearSearch(
+    ClearSearch event,
+    Emitter<ProductListState> emit,
+  ) {
+    if (state is! ProductListLoaded) return;
+
+    final currentState = state as ProductListLoaded;
+    emit(currentState.copyWith(
+      filteredProducts: currentState.products,
+      searchQuery: '',
+    ));
   }
 }
 

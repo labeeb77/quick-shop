@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/widgets/bottom_nav_bar.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/dimensions.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -12,9 +14,20 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: const Text('Profile'),
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        centerTitle: true,
         automaticallyImplyLeading: false,
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: Dimensions.fontSizeLarge,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {

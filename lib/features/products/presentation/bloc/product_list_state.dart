@@ -14,11 +14,29 @@ class ProductListLoading extends ProductListState {}
 
 class ProductListLoaded extends ProductListState {
   final List<Product> products;
+  final List<Product> filteredProducts;
+  final String searchQuery;
 
-  const ProductListLoaded(this.products);
+  const ProductListLoaded(
+    this.products, {
+    this.filteredProducts = const [],
+    this.searchQuery = '',
+  });
+
+  ProductListLoaded copyWith({
+    List<Product>? products,
+    List<Product>? filteredProducts,
+    String? searchQuery,
+  }) {
+    return ProductListLoaded(
+      products ?? this.products,
+      filteredProducts: filteredProducts ?? this.filteredProducts,
+      searchQuery: searchQuery ?? this.searchQuery,
+    );
+  }
 
   @override
-  List<Object> get props => [products];
+  List<Object> get props => [products, filteredProducts, searchQuery];
 }
 
 class ProductListError extends ProductListState {
