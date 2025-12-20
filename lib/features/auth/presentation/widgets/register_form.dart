@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/dimensions.dart';
-import '../../../../core/utils/validators.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import 'package:quick_shop/core/theme/app_colors.dart';
+import 'package:quick_shop/core/utils/dimensions.dart';
+import 'package:quick_shop/core/utils/validators.dart';
+import 'package:quick_shop/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quick_shop/features/auth/presentation/bloc/auth_event.dart';
+import 'package:quick_shop/features/auth/presentation/bloc/auth_state.dart';
 import 'custom_button.dart';
 import 'custom_text_field.dart';
 
@@ -63,9 +63,9 @@ class _RegisterFormState extends State<RegisterForm> {
         return Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Create Account heading
+              const SizedBox(height: Dimensions.paddingSizeExtraLarge * 2),
               const Text(
                 'Create Account',
                 style: TextStyle(
@@ -74,9 +74,8 @@ class _RegisterFormState extends State<RegisterForm> {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: Dimensions.paddingSizeExtraLarge * 2),
+              const SizedBox(height: Dimensions.paddingSizeExtraLarge * 1),
 
-              // Email field
               CustomTextField(
                 controller: _emailController,
                 hintText: 'Email',
@@ -86,7 +85,6 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              // Password field
               CustomTextField(
                 controller: _passwordController,
                 hintText: 'Password',
@@ -107,7 +105,6 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              // Confirm Password field
               CustomTextField(
                 controller: _confirmPasswordController,
                 hintText: 'Confirm Password',
@@ -131,7 +128,6 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraLarge * 4),
 
-              // Sign Up button
               CustomButton(
                 text: 'Sign Up',
                 onPressed: _submit,
@@ -140,7 +136,6 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               const SizedBox(height: Dimensions.paddingSizeLarge),
 
-              // Already have account button
               CustomButton(
                 text: 'Already have an account? Login',
                 onPressed: isLoading

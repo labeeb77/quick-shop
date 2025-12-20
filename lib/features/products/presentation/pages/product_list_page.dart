@@ -52,7 +52,6 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
       body: Column(
         children: [
-          // Search bar
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: Dimensions.paddingSizeLarge,
@@ -69,11 +68,9 @@ class _ProductListPageState extends State<ProductListPage> {
               },
             ),
           ),
-          // Product grid
           Expanded(
             child: BlocConsumer<ProductListBloc, ProductListState>(
               listener: (context, state) {
-                // Sync search controller with bloc state
                 if (state is ProductListLoaded && state.searchQuery.isEmpty) {
                   if (_searchController.text.isNotEmpty) {
                     _searchController.clear();
@@ -103,7 +100,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                 ? Icons.search_off
                                 : Icons.shopping_bag_outlined,
                             size: 80,
-                            color: AppColors.textHint.withOpacity(0.5),
+                            color: AppColors.textHint.withValues(alpha: 0.5),
                           ),
                           const SizedBox(height: Dimensions.paddingSizeLarge),
                           Text(
@@ -117,19 +114,21 @@ class _ProductListPageState extends State<ProductListPage> {
                             ),
                           ),
                           if (hasSearchQuery) ...[
-                            const SizedBox(height: Dimensions.paddingSizeDefault),
+                            const SizedBox(
+                              height: Dimensions.paddingSizeDefault,
+                            ),
                             TextButton(
                               onPressed: () {
-                                context.read<ProductListBloc>().add(const ClearSearch());
+                                context.read<ProductListBloc>().add(
+                                  const ClearSearch(),
+                                );
                                 _searchController.clear();
                               },
                               child: const Text(
                                 'Clear search',
-                                style: TextStyle(
-                                  color: AppColors.authPrimary,
-                                ),
-                              ),
+                                style: TextStyle(color: AppColors.authPrimary),
                             ),
+                          ),
                           ],
                         ],
                       ),
@@ -145,8 +144,7 @@ class _ProductListPageState extends State<ProductListPage> {
                           crossAxisCount: 2,
                           crossAxisSpacing: Dimensions.paddingSizeLarge,
                           mainAxisSpacing: Dimensions.paddingSizeLarge,
-                          childAspectRatio:
-                              0.65, // Taller cards to prevent overflow
+                          childAspectRatio: 0.65,
                         ),
                     itemCount: productsToShow.length,
                     itemBuilder: (context, index) {
@@ -162,7 +160,7 @@ class _ProductListPageState extends State<ProductListPage> {
                         Icon(
                           Icons.error_outline,
                           size: 80,
-                          color: AppColors.error.withOpacity(0.5),
+                          color: AppColors.error.withValues(alpha: 0.5),
                         ),
                         const SizedBox(height: Dimensions.paddingSizeLarge),
                         Text(
@@ -206,7 +204,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       Icon(
                         Icons.shopping_bag_outlined,
                         size: 80,
-                        color: AppColors.textHint.withOpacity(0.5),
+                        color: AppColors.textHint.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeLarge),
                       const Text(

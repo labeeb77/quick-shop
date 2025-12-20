@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/dimensions.dart';
+import 'package:quick_shop/core/theme/app_colors.dart';
+import 'package:quick_shop/core/utils/dimensions.dart';
 
 enum ButtonType { primary, secondary, text }
 
@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonHeight = height ?? Dimensions.buttonHeightDefault;
+    final buttonHeight = height ?? Dimensions.buttonHeightDefaultSmall;
 
     switch (type) {
       case ButtonType.primary:
@@ -32,7 +32,7 @@ class CustomButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isLoading ? null : onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.authPrimary, // Purple color from image
+              backgroundColor: AppColors.authPrimary,
               foregroundColor: AppColors.textWhite,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
@@ -40,7 +40,9 @@ class CustomButton extends StatelessWidget {
                 ),
               ),
               elevation: 0,
-              disabledBackgroundColor: AppColors.authPrimary.withOpacity(0.6),
+              disabledBackgroundColor: AppColors.authPrimary.withValues(
+                alpha: 0.6,
+              ),
             ),
             child: isLoading
                 ? const SizedBox(

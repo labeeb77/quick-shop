@@ -22,30 +22,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
-      
-      // Wait a moment for Firebase to fully initialize
+
       await Future.delayed(const Duration(milliseconds: 200));
-      
-      // Get user from currentUser to avoid type casting issues
+
       final firebaseUser = firebaseAuth.currentUser;
       if (firebaseUser == null) {
         throw AuthException('Sign in failed: User not found');
       }
-      
-      // Try to get user ID - this should always work
+
       String userId;
       try {
         userId = firebaseUser.uid;
       } catch (e) {
-        // If even UID fails, this is a critical error
-        throw AuthException('Sign in failed: Unable to get user ID - ${e.toString()}');
+        throw AuthException(
+          'Sign in failed: Unable to get user ID - ${e.toString()}',
+        );
       }
-      
+
       if (userId.isEmpty) {
         throw AuthException('Sign in failed: Invalid user ID');
       }
-      
-      // For email, use the provided email as fallback to avoid property access issues
+
       String userEmail = email;
       try {
         final emailFromFirebase = firebaseUser.email;
@@ -53,36 +50,28 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           userEmail = emailFromFirebase;
         }
       } catch (e) {
-        // If accessing email fails, use the provided email (this is safe)
-        // This handles the PigeonUserDetails casting error
+        // Handles PigeonUserDetails casting error
       }
-      
-      // Display name is optional, try to get it but don't fail if it errors
+
       String? displayName;
       try {
         displayName = firebaseUser.displayName;
       } catch (e) {
-        // Ignore errors for optional field
         displayName = null;
       }
-      
-      return UserModel(
-        id: userId,
-        email: userEmail,
-        displayName: displayName,
-      );
+
+      return UserModel(id: userId, email: userEmail, displayName: displayName);
     } on FirebaseAuthException catch (e) {
       throw AuthException(_getErrorMessage(e));
     } on AuthException {
       rethrow;
     } catch (e) {
-      // Final fallback: if everything fails, try to get at least the UID
       final currentUser = firebaseAuth.currentUser;
       if (currentUser != null) {
         try {
           return UserModel(
             id: currentUser.uid,
-            email: email, // Use the email provided during sign in
+            email: email,
             displayName: null,
           );
         } catch (fallbackError) {
@@ -96,31 +85,65 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<domain.User> signUp(String email, String password) async {
     try {
-      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+      await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
-      final firebaseUser = userCredential.user;
+
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      final firebaseUser = firebaseAuth.currentUser;
       if (firebaseUser == null) {
-        throw AuthException('Sign up failed: User not created');
+        throw AuthException('Sign up failed: User not found');
       }
-      
-      // Access user properties safely
-      final userId = firebaseUser.uid;
-      final userEmail = firebaseUser.email ?? email;
-      final displayName = firebaseUser.displayName;
-      
-      return UserModel(
-        id: userId,
-        email: userEmail,
-        displayName: displayName,
-      );
+
+      String userId;
+      try {
+        userId = firebaseUser.uid;
+      } catch (e) {
+        throw AuthException(
+          'Sign up failed: Unable to get user ID - ${e.toString()}',
+        );
+      }
+
+      if (userId.isEmpty) {
+        throw AuthException('Sign up failed: Invalid user ID');
+      }
+
+      String userEmail = email;
+      try {
+        final emailFromFirebase = firebaseUser.email;
+        if (emailFromFirebase != null && emailFromFirebase.isNotEmpty) {
+          userEmail = emailFromFirebase;
+        }
+      } catch (e) {
+        // Handles PigeonUserDetails casting error
+      }
+
+      String? displayName;
+      try {
+        displayName = firebaseUser.displayName;
+      } catch (e) {
+        displayName = null;
+      }
+
+      return UserModel(id: userId, email: userEmail, displayName: displayName);
     } on FirebaseAuthException catch (e) {
       throw AuthException(_getErrorMessage(e));
+    } on AuthException {
+      rethrow;
     } catch (e) {
-      if (e is AuthException) {
-        rethrow;
+      final currentUser = firebaseAuth.currentUser;
+      if (currentUser != null) {
+        try {
+          return UserModel(
+            id: currentUser.uid,
+            email: email,
+            displayName: null,
+          );
+        } catch (fallbackError) {
+          throw AuthException('Sign up failed: ${e.toString()}');
+        }
       }
       throw AuthException('Sign up failed: ${e.toString()}');
     }
@@ -140,18 +163,42 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final firebaseUser = firebaseAuth.currentUser;
       if (firebaseUser == null) return null;
-      
-      // Access user properties safely
-      final userId = firebaseUser.uid;
-      final userEmail = firebaseUser.email ?? '';
-      final displayName = firebaseUser.displayName;
-      
-      return UserModel(
-        id: userId,
-        email: userEmail,
-        displayName: displayName,
-      );
+
+      String userId;
+      try {
+        userId = firebaseUser.uid;
+      } catch (e) {
+        throw AuthException(
+          'Failed to get current user: Unable to get user ID - ${e.toString()}',
+        );
+      }
+
+      if (userId.isEmpty) {
+        throw AuthException('Failed to get current user: Invalid user ID');
+      }
+
+      String userEmail = '';
+      try {
+        final emailFromFirebase = firebaseUser.email;
+        if (emailFromFirebase != null && emailFromFirebase.isNotEmpty) {
+          userEmail = emailFromFirebase;
+        }
+      } catch (e) {
+        // Handles PigeonUserDetails casting error
+      }
+
+      String? displayName;
+      try {
+        displayName = firebaseUser.displayName;
+      } catch (e) {
+        displayName = null;
+      }
+
+      return UserModel(id: userId, email: userEmail, displayName: displayName);
     } catch (e) {
+      if (e is AuthException) {
+        rethrow;
+      }
       throw AuthException('Failed to get current user: ${e.toString()}');
     }
   }
@@ -161,7 +208,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       case 'user-not-found':
         return 'No user found with this email.';
       case 'wrong-password':
-        return 'Wrong password provided.';
+        return 'Invalid Credential';
+      case 'invalid-credential':
+        return 'Invalid Credential';
       case 'email-already-in-use':
         return 'The account already exists for that email.';
       case 'invalid-email':
@@ -171,8 +220,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       case 'user-disabled':
         return 'This user account has been disabled.';
       default:
-        return e.message ?? 'Authentication failed';
+        final message = e.message ?? 'Authentication failed';
+        if (message.contains('supplied auth credential is incorrect') ||
+            message.contains('supplied auth credential is incorrect, malformed or has expired')) {
+          return 'Invalid Credential';
+        }
+        return message;
     }
   }
 }
-

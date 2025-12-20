@@ -20,7 +20,6 @@ class BottomNavBar extends StatelessWidget {
             vertical: Dimensions.paddingSizeExtraSmall,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _NavItem(
                 iconPath:
@@ -89,10 +88,21 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
       onTap: onTap,
+          borderRadius: BorderRadius.circular(Dimensions.radiusSizeDefault),
+          splashColor: AppColors.authPrimary.withValues(alpha: 0.1),
+          highlightColor: AppColors.authPrimary.withValues(alpha: 0.05),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: Dimensions.paddingSizeSmall,
+            ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(
             iconPath,
@@ -117,6 +127,9 @@ class _NavItem extends StatelessWidget {
             ),
           ),
         ],
+            ),
+          ),
+        ),
       ),
     );
   }

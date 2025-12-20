@@ -22,7 +22,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   void initState() {
     super.initState();
-    // Ensure cart is loaded
     context.read<CartBloc>().add(const LoadCart());
   }
 
@@ -59,9 +58,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.shopping_cart_outlined,
+                      Icons.shopping_cart_outlined, 
                       size: 80,
-                      color: AppColors.textHint.withOpacity(0.5),
+                      color: AppColors.textHint.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeLarge),
                     const Text(
@@ -98,26 +97,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Cart Items List
                         ...state.items.map((item) => _CheckoutItemCard(item: item)),
-                        
                         const SizedBox(height: Dimensions.paddingSizeLarge),
-                        
-                        // Order Summary
                         _OrderSummary(total: state.total),
                       ],
                     ),
                   ),
                 ),
-                
-                // Checkout Button
                 Container(
                   padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.black.withOpacity(0.05) ,
+                        color: AppColors.black.withValues(alpha: 0.05) ,
                         blurRadius: 10,
                         offset: const Offset(0, -2),
                       ),
@@ -129,7 +122,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       height: Dimensions.buttonHeightDefault,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Show success dialog
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -253,7 +245,6 @@ class _CheckoutItemCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Product Image
           ClipRRect(
             borderRadius: BorderRadius.circular(Dimensions.radiusSizeDefault),
             child: CachedNetworkImage(
@@ -281,8 +272,6 @@ class _CheckoutItemCard extends StatelessWidget {
           ),
           
           const SizedBox(width: Dimensions.paddingSizeDefault),
-          
-          // Product Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,7 +288,7 @@ class _CheckoutItemCard extends StatelessWidget {
                 ),
                 const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                 Text(
-                  'Size', // Placeholder for size - can be removed or made dynamic
+                  'Size',
                   style: TextStyle(
                     fontSize: Dimensions.fontSizeSmall,
                     color: AppColors.textSecondary,
@@ -307,8 +296,6 @@ class _CheckoutItemCard extends StatelessWidget {
                 ),
                 
                 const SizedBox(height: Dimensions.paddingSizeSmall),
-                
-                // Quantity Controls
                 Row(
                   children: [
                     GestureDetector(
@@ -358,8 +345,6 @@ class _CheckoutItemCard extends StatelessWidget {
               ],
             ),
           ),
-          
-          // Price
           Text(
             item.total.toPriceString(),
             style: const TextStyle(
@@ -381,7 +366,7 @@ class _OrderSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double deliveryFee = 0.0; // Free delivery or can be calculated
+    const double deliveryFee = 0.0;
     final double estimatedTotal = total + deliveryFee;
 
     return Container(
@@ -406,8 +391,6 @@ class _OrderSummary extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Dimensions.paddingSizeLarge),
-          
-          // Subtotal
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -429,8 +412,6 @@ class _OrderSummary extends StatelessWidget {
           ),
           
           const SizedBox(height: Dimensions.paddingSizeSmall),
-          
-          // Delivery
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -452,8 +433,6 @@ class _OrderSummary extends StatelessWidget {
           ),
           
           const Divider(height: Dimensions.paddingSizeLarge),
-          
-          // Estimated Total
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

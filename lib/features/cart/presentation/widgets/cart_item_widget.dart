@@ -20,7 +20,6 @@ class CartItemWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Product Image
           Container(
             width: 120,
             height: 120,
@@ -50,13 +49,10 @@ class CartItemWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Dimensions.paddingSizeLarge),
-
-          // Product Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product Title
                 Text(
                   item.title,
                   maxLines: 2,
@@ -69,22 +65,17 @@ class CartItemWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                // Size or additional info (placeholder)
                 Text(
-                  'Size', // You can add size property to CartItem if needed
+                  'Size',
                   style: TextStyle(
                     fontSize: Dimensions.fontSizeDefault,
                     color: AppColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                // Quantity Controls and Price
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Quantity Controls
                     Container(
                       decoration: BoxDecoration(
                         color: AppColors.authInputBackground,
@@ -95,7 +86,6 @@ class CartItemWidget extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Delete Button
                           InkWell(
                             onTap: () {
                               if (item.quantity > 1) {
@@ -122,8 +112,6 @@ class CartItemWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-
-                          // Quantity
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: Dimensions.paddingSizeDefault,
@@ -137,8 +125,6 @@ class CartItemWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-
-                          // Add Button
                           InkWell(
                             onTap: () {
                               context.read<CartBloc>().add(
@@ -162,8 +148,6 @@ class CartItemWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // Price
                     Text(
                       item.total.toPriceString(),
                       style: const TextStyle(

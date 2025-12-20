@@ -24,11 +24,8 @@ class SearchPage extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Text('Search Page'),
-      ),
+      body: const Center(child: Text('Search Page')),
       bottomNavigationBar: const BottomNavBar(currentIndex: 1),
     );
   }
 }
-

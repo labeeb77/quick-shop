@@ -24,6 +24,7 @@ class Dimensions {
   static const double radiusSizeExtraLarge = 30.0;
 
   static const double buttonHeightDefault = 56.0;
+  static const double buttonHeightDefaultSmall = 50.0;
 
   static const double iconSizeSmall = 18.0;
   static const double iconSizeMedium = 24.0;

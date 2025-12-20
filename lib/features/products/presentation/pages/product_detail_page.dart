@@ -51,7 +51,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         centerTitle: true,
       ),
       body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
-        builder: (context, state) {
+          builder: (context, state) {
           if (state is ProductDetailLoading) {
             return const Center(
               child: CircularProgressIndicator(
@@ -61,12 +61,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
             );
           } else if (state is ProductDetailLoaded) {
-            final product = state.product;
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Product Image Section
+              final product = state.product;
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
                   Container(
                     height: 350,
                     margin: const EdgeInsets.all(Dimensions.paddingSizeLarge),
@@ -77,7 +77,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.black.withOpacity(0.05),
+                          color: AppColors.black.withValues(alpha: 0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -88,16 +88,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         Dimensions.radiusSizeLarge,
                       ),
                       child: CachedNetworkImage(
-                        imageUrl: product.image,
-                        fit: BoxFit.contain,
-                        placeholder: (context, url) => const Center(
+                      imageUrl: product.image,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => const Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               AppColors.authPrimary,
                             ),
                           ),
-                        ),
+                      ),
                         errorWidget: (context, url, error) => const Icon(
                           Icons.image_not_supported_outlined,
                           color: AppColors.textHint,
@@ -105,41 +105,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                       ),
                     ),
-                  ),
-                  // Product Info Section
-                  Padding(
+                    ),
+                    Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Dimensions.paddingSizeLarge,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Product Title
-                        Text(
-                          product.title,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.title,
                           style: const TextStyle(
                             fontSize: Dimensions.fontSizeExtraLarge,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                             height: 1.3,
                           ),
-                        ),
+                          ),
                         const SizedBox(height: Dimensions.paddingSizeDefault),
-                        // Price and Rating Row
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // Price
-                            Text(
-                              product.price.toPriceString(),
+                          Text(
+                            product.price.toPriceString(),
                               style: const TextStyle(
                                 fontSize: Dimensions.fontSizeOverLarge,
-                                fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.bold,
                                 color: AppColors.authPrimary,
-                              ),
-                            ),
-                            // Rating
+                                ),
+                          ),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: Dimensions.paddingSizeDefault,
@@ -153,7 +148,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
+                            children: [
                                   const Icon(
                                     Icons.star,
                                     color: Colors.amber,
@@ -168,7 +163,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       color: AppColors.textPrimary,
                                     ),
                                   ),
-                                  const SizedBox(width: 4),
+                              const SizedBox(width: 4),
                                   Text(
                                     '(${product.rating.count})',
                                     style: const TextStyle(
@@ -182,14 +177,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ],
                         ),
                         const SizedBox(height: Dimensions.paddingSizeLarge),
-                        // Category Badge
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: Dimensions.paddingSizeDefault,
                             vertical: Dimensions.paddingSizeSmall,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.authPrimary.withOpacity(0.1),
+                            color: AppColors.authPrimary.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(
                               Dimensions.radiusSizeDefault,
                             ),
@@ -203,11 +197,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               letterSpacing: 0.5,
                             ),
                           ),
-                        ),
+                          ),
                         const SizedBox(height: Dimensions.paddingSizeLarge),
-                        // Description Section
                         const Text(
-                          'Description',
+                            'Description',
                           style: TextStyle(
                             fontSize: Dimensions.fontSizeLarge,
                             fontWeight: FontWeight.w600,
@@ -215,8 +208,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ),
                         const SizedBox(height: Dimensions.paddingSizeDefault),
-                        Text(
-                          product.description,
+                          Text(
+                            product.description,
                           style: const TextStyle(
                             fontSize: Dimensions.fontSizeDefault,
                             color: AppColors.textSecondary,
@@ -224,21 +217,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ),
                         const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-                        // Add to Cart Button
-                        SizedBox(
-                          width: double.infinity,
+                          SizedBox(
+                            width: double.infinity,
                           height: Dimensions.buttonHeightDefault,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              context.read<CartBloc>().add(
-                                    AddToCartRequested(
-                                      productId: product.id,
-                                      title: product.title,
-                                      price: product.price,
-                                      image: product.image,
-                                    ),
-                                  );
-                              ScaffoldMessenger.of(context).showSnackBar(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                context.read<CartBloc>().add(
+                                      AddToCartRequested(
+                                        productId: product.id,
+                                        title: product.title,
+                                        price: product.price,
+                                        image: product.image,
+                                      ),
+                                    );
+                                ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text(
                                     'Product added to cart',
@@ -253,9 +245,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       Dimensions.radiusSizeDefault,
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                  ),
+                                );
+                              },
                             icon: const Icon(
                               Icons.shopping_cart_outlined,
                               color: AppColors.textWhite,
@@ -280,15 +272,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: Dimensions.paddingSizeLarge),
-                      ],
+                        SizedBox(
+                          height: Dimensions.paddingSizeLarge +
+                              MediaQuery.of(context).padding.bottom,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
+                  ],
+                ),
+                ),
+              );
           } else if (state is ProductDetailError) {
-            return Center(
+              return Center(
               child: Padding(
                 padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
                 child: Column(
@@ -297,7 +293,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     Icon(
                       Icons.error_outline,
                       size: 80,
-                      color: AppColors.error.withOpacity(0.5),
+                      color: AppColors.error.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeLarge),
                     Text(
@@ -332,9 +328,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ],
                 ),
-              ),
-            );
-          }
+                ),
+              );
+            }
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -342,7 +338,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Icon(
                   Icons.shopping_bag_outlined,
                   size: 80,
-                  color: AppColors.textHint.withOpacity(0.5),
+                  color: AppColors.textHint.withValues(alpha: 0.5),
                 ),
                 const SizedBox(height: Dimensions.paddingSizeLarge),
                 const Text(
@@ -355,8 +351,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ],
             ),
           );
-        },
-      ),
+          },
+        ),
     );
   }
 }

@@ -30,7 +30,7 @@ class _ProductCardState extends State<ProductCard> {
           borderRadius: BorderRadius.circular(Dimensions.radiusSizeLarge),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withOpacity(0.05),
+              color: AppColors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -39,12 +39,10 @@ class _ProductCardState extends State<ProductCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image with favorite button - Larger but balanced
             Expanded(
               flex: 5,
               child: Stack(
                 children: [
-                  // Product Image
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -76,7 +74,6 @@ class _ProductCardState extends State<ProductCard> {
                       ),
                     ),
                   ),
-                  // Favorite button
                   Positioned(
                     top: Dimensions.paddingSizeSmall,
                     right: Dimensions.paddingSizeSmall,
@@ -85,7 +82,6 @@ class _ProductCardState extends State<ProductCard> {
                         setState(() {
                           isFavorite = !isFavorite;
                         });
-                        // TODO: Implement favorite functionality
                       },
                       child: Container(
                         padding: const EdgeInsets.all(
@@ -96,7 +92,7 @@ class _ProductCardState extends State<ProductCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.black.withOpacity(0.1),
+                              color: AppColors.black.withValues(alpha: 0.1),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -115,7 +111,6 @@ class _ProductCardState extends State<ProductCard> {
                 ],
               ),
             ),
-            // Product details - Enough space for text
             Expanded(
               flex: 2,
               child: Padding(
@@ -128,7 +123,6 @@ class _ProductCardState extends State<ProductCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Product title
                     Flexible(
                       child: Text(
                         widget.product.title,
@@ -143,7 +137,6 @@ class _ProductCardState extends State<ProductCard> {
                       ),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                    // Product price
                     Text(
                       widget.product.price.toPriceString(),
                       style: const TextStyle(

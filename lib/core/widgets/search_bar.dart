@@ -66,55 +66,60 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Dimensions.buttonHeightDefault - 6,
-      decoration: BoxDecoration(
-        color: AppColors.authInputBackground,
-        borderRadius: BorderRadius.circular(Dimensions.radiusSizeExtraLarge),
-      ),
-      child: TextField(
-        controller: widget.controller,
-        onChanged: (value) {
-          setState(() {
-            _hasText = value.isNotEmpty;
-          });
-          widget.onChanged?.call(value);
-        },
-        onTap: widget.onTap,
-        readOnly: widget.readOnly,
+    return TextField(
+      controller: widget.controller,
+      onChanged: (value) {
+        setState(() {
+          _hasText = value.isNotEmpty;
+        });
+        widget.onChanged?.call(value);
+      },
+      onTap: widget.onTap,
+      readOnly: widget.readOnly,
         style: const TextStyle(
-          fontSize: Dimensions.fontSizeLarge,
+        fontSize: Dimensions.fontSizeDefault,
           color: AppColors.textPrimary,
         ),
         decoration: InputDecoration(
-          hintText: widget.hintText,
+        filled: true,
+        fillColor: AppColors.authInputBackground,
+        hintText: widget.hintText,
           hintStyle: const TextStyle(
             color: AppColors.textHint,
-            fontSize: Dimensions.fontSizeLarge,
+          fontSize: Dimensions.fontSizeDefault,
           ),
-          prefixIcon: const Icon(Icons.search, color: AppColors.textHint),
-          suffixIcon: _hasText
+        prefixIcon: const Icon(
+          Icons.search,
+          color: AppColors.textHint,
+          size: 20,
+        ),
+        suffixIcon: _hasText
               ? IconButton(
-                  icon: Container(
-                    padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                    decoration: BoxDecoration(
-                      color: AppColors.textHint.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      color: AppColors.textHint,
-                      size: 18,
-                    ),
-                  ),
-                  onPressed: _handleClear,
+                icon: const Icon(
+                  Icons.close,
+                  color: AppColors.textHint,
+                  size: 20,
+                ),
+                onPressed: _handleClear,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
                 )
               : null,
-          border: InputBorder.none,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Dimensions.radiusSizeExtraLarge),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Dimensions.radiusSizeExtraLarge),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Dimensions.radiusSizeExtraLarge),
+          borderSide: BorderSide.none,
+        ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: Dimensions.paddingSizeLarge,
             vertical: Dimensions.paddingSizeDefault,
-          ),
         ),
       ),
     );

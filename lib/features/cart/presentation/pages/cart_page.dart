@@ -21,7 +21,6 @@ class _CartPageState extends State<CartPage> {
   @override
   void initState() {
     super.initState();
-    // Load cart when page is opened
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<CartBloc>().add(const LoadCart());
     });
@@ -58,7 +57,6 @@ class _CartPageState extends State<CartPage> {
         },
         child: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
-            // If initial state, load cart
             if (state is CartInitial) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 context.read<CartBloc>().add(const LoadCart());
@@ -89,7 +87,7 @@ class _CartPageState extends State<CartPage> {
                       Icon(
                         Icons.shopping_cart_outlined,
                         size: 80,
-                        color: AppColors.textHint.withOpacity(0.5),
+                        color: AppColors.textHint.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: Dimensions.paddingSizeLarge),
                       const Text(
@@ -126,7 +124,6 @@ class _CartPageState extends State<CartPage> {
 
               return Column(
                 children: [
-                  // Cart Items List
                   Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(
@@ -138,15 +135,13 @@ class _CartPageState extends State<CartPage> {
                       },
                     ),
                   ),
-
-                  // Summary Section
                   Container(
                     padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.black.withOpacity(0.05),
+                          color: AppColors.black.withValues(alpha: 0.05),
                           blurRadius: 10,
                           offset: const Offset(0, -2),
                         ),
@@ -155,7 +150,6 @@ class _CartPageState extends State<CartPage> {
                     child: SafeArea(
                       child: Column(
                         children: [
-                          // Subtotal
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -177,8 +171,6 @@ class _CartPageState extends State<CartPage> {
                             ],
                           ),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          // Delivery
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -199,12 +191,8 @@ class _CartPageState extends State<CartPage> {
                             ],
                           ),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          // Divider
                           Divider(color: AppColors.authBorder),
                           const SizedBox(height: Dimensions.paddingSizeDefault),
-
-                          // Estimated Total
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -227,8 +215,6 @@ class _CartPageState extends State<CartPage> {
                             ],
                           ),
                           const SizedBox(height: Dimensions.paddingSizeLarge),
-
-                          // Checkout Button
                           SizedBox(
                             width: double.infinity,
                             height: Dimensions.buttonHeightDefault,
@@ -269,7 +255,7 @@ class _CartPageState extends State<CartPage> {
                     Icon(
                       Icons.error_outline,
                       size: 80,
-                      color: AppColors.error.withOpacity(0.5),
+                      color: AppColors.error.withValues(alpha: 0.5),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeLarge),
                     Text(
@@ -311,7 +297,7 @@ class _CartPageState extends State<CartPage> {
                   Icon(
                     Icons.shopping_cart_outlined,
                     size: 80,
-                    color: AppColors.textHint.withOpacity(0.5),
+                    color: AppColors.textHint.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: Dimensions.paddingSizeLarge),
                   const Text(

@@ -42,7 +42,6 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
       
       if (existingItemIndex != -1) {
         final existingItem = cart[existingItemIndex];
-        // Convert to CartItemModel to ensure type consistency
         final updatedItem = CartItemModel(
           productId: existingItem.productId,
           title: existingItem.title,
@@ -52,7 +51,6 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
         );
         cart[existingItemIndex] = updatedItem;
       } else {
-        // Convert CartItem to CartItemModel
         cart.add(CartItemModel.fromEntity(item));
       }
 
@@ -84,7 +82,6 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
           cart.removeAt(itemIndex);
         } else {
           final item = cart[itemIndex];
-          // Convert to CartItemModel to ensure type consistency
           final updatedItem = CartItemModel(
             productId: item.productId,
             title: item.title,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/dimensions.dart';
+import 'package:quick_shop/core/theme/app_colors.dart' show AppColors;
+import 'package:quick_shop/core/utils/dimensions.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -68,7 +68,7 @@ class CustomTextField extends StatelessWidget {
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: Dimensions.paddingSizeLarge,
-          vertical: Dimensions.paddingSizeLarge,
+          vertical: Dimensions.paddingSizeDefault,
         ),
         suffixIcon: suffixIcon,
       ),

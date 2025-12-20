@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../core/usecases/usecase.dart';
-import '../entities/product.dart';
+import 'package:quick_shop/core/error/failures.dart';
+import 'package:quick_shop/core/usecases/usecase.dart';
+import 'package:quick_shop/features/products/domain/entities/product.dart' show Product;
+
 import '../repositories/product_repository.dart';
 
 class GetProductDetailsUseCase implements UseCase<Product, ProductDetailsParams> {

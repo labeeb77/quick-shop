@@ -18,7 +18,6 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // Check auth status
     context.read<AuthBloc>().add(const CheckAuthStatus());
   }
 
@@ -27,14 +26,12 @@ class _SplashPageState extends State<SplashPage> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
-          // User is logged in, navigate to home
           Future.delayed(const Duration(seconds: 1), () {
             if (mounted) {
               context.go('/home');
             }
           });
         } else if (state is AuthUnauthenticated) {
-          // User is not logged in, navigate to login
           Future.delayed(const Duration(seconds: 1), () {
             if (mounted) {
               context.go('/login');
@@ -48,7 +45,6 @@ class _SplashPageState extends State<SplashPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // App Logo or Icon
               Icon(
                 Icons.shopping_bag,
                 size: Dimensions.imageSizeSmall,
@@ -72,4 +68,3 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 }
-
