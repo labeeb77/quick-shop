@@ -11,6 +11,82 @@ import '../bloc/auth_state.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            Dimensions.radiusSizeExtraLarge,
+          ),
+        ),
+        title: const Text(
+          'Logout',
+          style: TextStyle(
+            fontSize: Dimensions.fontSizeExtraLarge,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: const Text(
+          'Are you sure you want to logout?',
+          style: TextStyle(
+            fontSize: Dimensions.fontSizeDefault,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.textSecondary,
+              padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.paddingSizeLarge,
+                vertical: Dimensions.paddingSizeDefault,
+              ),
+            ),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                fontSize: Dimensions.fontSizeLarge,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.read<AuthBloc>().add(const SignOutRequested());
+              context.go('/login');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.authPrimary,
+              foregroundColor: AppColors.textWhite,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  Dimensions.radiusSizeExtraLarge,
+                ),
+              ),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.paddingSizeLarge,
+                vertical: Dimensions.paddingSizeDefault,
+              ),
+            ),
+            child: const Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: Dimensions.fontSizeLarge,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,42 +110,33 @@ class ProfilePage extends StatelessWidget {
           if (state is AuthAuthenticated) {
             return Column(
               children: [
-                const SizedBox(height: 32),
+                const SizedBox(height: Dimensions.paddingSize32),
                 CircleAvatar(
-                  radius: 50,
+                  radius: Dimensions.avatarRadiusLarge,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   child: Text(
                     state.user.email[0].toUpperCase(),
                     style: const TextStyle(
-                      fontSize: 40,
-                      color: Colors.white,
+                      fontSize: Dimensions.iconSizeLarge,
+                      color: AppColors.textWhite,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: Dimensions.paddingSize16),
                 Text(
                   state.user.email,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: Dimensions.fontSize20,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 48),
-                ListTile(
-                  leading: const Icon(Icons.settings),
-                  title: const Text('Settings'),
-                  onTap: () {
-                    // Navigate to settings
-                  },
-                ),
+                const SizedBox(height: Dimensions.paddingSize48),
+              
                 ListTile(
                   leading: const Icon(Icons.logout),
                   title: const Text('Logout'),
-                  onTap: () {
-                    context.read<AuthBloc>().add(const SignOutRequested());
-                    context.go('/login');
-                  },
+                  onTap: () => _showLogoutDialog(context),
                 ),
               ],
             );

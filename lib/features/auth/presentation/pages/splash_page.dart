@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/dimensions.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -41,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,19 +51,19 @@ class _SplashPageState extends State<SplashPage> {
               // App Logo or Icon
               Icon(
                 Icons.shopping_bag,
-                size: 80,
+                size: Dimensions.imageSizeSmall,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: Dimensions.fontSizeOverLarge),
               const Text(
                 'Quick Shop',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: Dimensions.fontSizeMaxLarge + 2,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: Dimensions.paddingSize48),
               const CircularProgressIndicator(),
             ],
           ),

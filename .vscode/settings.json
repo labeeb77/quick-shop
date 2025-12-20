@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/home/texol/dev/labeeb/flutter/quick_shop/linux"
+  "cmake.sourceDirectory": "/home/texol/dev/labeeb/flutter/quick_shop/linux",
+  "dart.flutterSdkPath": ".fvm/versions/3.38.5"
 }

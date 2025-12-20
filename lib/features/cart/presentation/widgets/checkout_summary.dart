@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/utils/dimensions.dart';
 import '../bloc/cart_bloc.dart';
 import '../bloc/cart_state.dart';
 import '../../domain/entities/cart_item.dart';
@@ -15,7 +16,7 @@ class CheckoutSummary extends StatelessWidget {
         if (state is CartLoaded) {
           return Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(Dimensions.paddingSize16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -23,7 +24,7 @@ class CheckoutSummary extends StatelessWidget {
                     'Items (${state.itemCount})',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: Dimensions.paddingSize16),
                   ...state.items.map((item) => _CheckoutItemRow(item: item)),
                 ],
               ),
@@ -44,7 +45,7 @@ class _CheckoutItemRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall + 3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

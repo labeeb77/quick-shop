@@ -93,6 +93,22 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 ),
               ),
+              // Error message for invalid credentials
+              if (state is AuthError)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: Dimensions.paddingSizeSmall,
+                    left: Dimensions.paddingSizeSmall,
+                  ),
+                  child: Text(
+                    'Invalid Credentials',
+                    style: const TextStyle(
+                      color: AppColors.error,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Dimensions.fontSizeSmall,
+                    ),
+                  ),
+                ),
               const SizedBox(height: Dimensions.paddingSizeExtraLarge * 4),
 
               // Sign In button

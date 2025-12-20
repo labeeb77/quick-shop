@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/dimensions.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_state.dart';
-import '../widgets/login_form.dart';
+import 'package:quick_shop/core/theme/app_colors.dart';
+import 'package:quick_shop/core/utils/dimensions.dart';
+import 'package:quick_shop/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quick_shop/features/auth/presentation/bloc/auth_state.dart';
+import 'package:quick_shop/features/auth/presentation/widgets/login_form.dart';
+
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -30,14 +31,7 @@ class LoginPage extends StatelessWidget {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          } else if (state is AuthAuthenticated) {
+          if (state is AuthAuthenticated) {
             context.go('/home');
           }
         },

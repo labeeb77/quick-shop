@@ -1,36 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/utils/dimensions.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
 
-  const BottomNavBar({
-    super.key,
-    required this.currentIndex,
-  });
+  const BottomNavBar({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
+      decoration: const BoxDecoration(color: AppColors.white),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: Dimensions.paddingSizeDefault,
+            vertical: Dimensions.paddingSizeExtraSmall,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _NavItem(
-                iconPath: 'assets/icons/home_${currentIndex == 0 ? 'on' : 'off'}.svg',
+                iconPath:
+                    'assets/icons/home_${currentIndex == 0 ? 'on' : 'off'}.svg',
                 label: 'Home',
                 isActive: currentIndex == 0,
                 onTap: () {
@@ -40,7 +34,8 @@ class BottomNavBar extends StatelessWidget {
                 },
               ),
               _NavItem(
-                iconPath: 'assets/icons/search_${currentIndex == 1 ? 'on' : 'off'}.svg',
+                iconPath:
+                    'assets/icons/search_${currentIndex == 1 ? 'on' : 'off'}.svg',
                 label: 'Search',
                 isActive: currentIndex == 1,
                 onTap: () {
@@ -50,7 +45,8 @@ class BottomNavBar extends StatelessWidget {
                 },
               ),
               _NavItem(
-                iconPath: 'assets/icons/cart_${currentIndex == 2 ? 'on' : 'off'}.svg',
+                iconPath:
+                    'assets/icons/cart_${currentIndex == 2 ? 'on' : 'off'}.svg',
                 label: 'Cart',
                 isActive: currentIndex == 2,
                 onTap: () {
@@ -60,7 +56,8 @@ class BottomNavBar extends StatelessWidget {
                 },
               ),
               _NavItem(
-                iconPath: 'assets/icons/profile_${currentIndex == 3 ? 'on' : 'off'}.svg',
+                iconPath:
+                    'assets/icons/profile_${currentIndex == 3 ? 'on' : 'off'}.svg',
                 label: 'Profile',
                 isActive: currentIndex == 3,
                 onTap: () {
@@ -99,23 +96,23 @@ class _NavItem extends StatelessWidget {
         children: [
           SvgPicture.asset(
             iconPath,
-            width: 24,
-            height: 24,
+            width: Dimensions.iconSizeMedium,
+            height: Dimensions.iconSizeMedium,
             colorFilter: ColorFilter.mode(
               isActive
                   ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
+                  : AppColors.textSecondary,
               BlendMode.srcIn,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: Dimensions.paddingSizeExtraSmall),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: Dimensions.fontSizeSmall,
               color: isActive
                   ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
+                  : AppColors.textSecondary,
               fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
@@ -124,4 +121,3 @@ class _NavItem extends StatelessWidget {
     );
   }
 }
-

@@ -117,7 +117,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     color: AppColors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: AppColors.black.withOpacity(0.05) ,
                         blurRadius: 10,
                         offset: const Offset(0, -2),
                       ),
@@ -133,15 +133,55 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('Order Placed!'),
-                              content: const Text('Thank you for your purchase.'),
+                              backgroundColor: AppColors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  Dimensions.radiusSizeExtraLarge,
+                                ),
+                              ),
+                              title: const Text(
+                                'Order Placed!',
+                                style: TextStyle(
+                                  fontSize: Dimensions.fontSizeExtraLarge,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                              content: const Text(
+                                'Thank you for your purchase.',
+                                style: TextStyle(
+                                  fontSize: Dimensions.fontSizeDefault,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
                               actions: [
-                                TextButton(
+                                ElevatedButton(
                                   onPressed: () {
+                                    Navigator.of(context).pop();
                                     context.read<CartBloc>().add(const ClearCartRequested());
                                     context.go('/home');
                                   },
-                                  child: const Text('OK'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.authPrimary,
+                                    foregroundColor: AppColors.textWhite,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusSizeExtraLarge,
+                                      ),
+                                    ),
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: Dimensions.paddingSizeLarge,
+                                      vertical: Dimensions.paddingSizeDefault,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      fontSize: Dimensions.fontSizeLarge,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -174,7 +214,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(state.message),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: Dimensions.paddingSize16),
                   ElevatedButton(
                     onPressed: () {
                       context.read<CartBloc>().add(const LoadCart());
@@ -208,7 +248,7 @@ class _CheckoutItemCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimensions.radiusSizeDefault),
         border: Border.all(
           color: AppColors.authBorder,
-          width: 1,
+          width: Dimensions.borderWidthDefault,
         ),
       ),
       child: Row(
@@ -218,12 +258,12 @@ class _CheckoutItemCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(Dimensions.radiusSizeDefault),
             child: CachedNetworkImage(
               imageUrl: item.image,
-              width: 80,
-              height: 80,
+              width: Dimensions.imageSizeSmall,
+              height: Dimensions.imageSizeSmall,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
-                width: 80,
-                height: 80,
+                width: Dimensions.imageSizeSmall,
+                height: Dimensions.imageSizeSmall,
                 color: AppColors.authInputBackground,
                 child: const Center(
                   child: CircularProgressIndicator(
@@ -232,8 +272,8 @@ class _CheckoutItemCard extends StatelessWidget {
                 ),
               ),
               errorWidget: (context, url, error) => Container(
-                width: 80,
-                height: 80,
+                width: Dimensions.imageSizeSmall,
+                height: Dimensions.imageSizeSmall,
                 color: AppColors.authInputBackground,
                 child: const Icon(Icons.error_outline),
               ),
@@ -257,7 +297,7 @@ class _CheckoutItemCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                 Text(
                   'Size', // Placeholder for size - can be removed or made dynamic
                   style: TextStyle(
@@ -279,7 +319,7 @@ class _CheckoutItemCard extends StatelessWidget {
                       },
                       child: Icon(
                         Icons.delete_outline,
-                        size: 20,
+                        size: Dimensions.iconSizeSmall + 2,
                         color: AppColors.textSecondary,
                       ),
                     ),
@@ -309,7 +349,7 @@ class _CheckoutItemCard extends StatelessWidget {
                       },
                       child: Icon(
                         Icons.add,
-                        size: 20,
+                        size: Dimensions.iconSizeSmall + 2,
                         color: AppColors.textPrimary,
                       ),
                     ),
@@ -351,7 +391,7 @@ class _OrderSummary extends StatelessWidget {
         borderRadius: BorderRadius.circular(Dimensions.radiusSizeDefault),
         border: Border.all(
           color: AppColors.authBorder,
-          width: 1,
+          width: Dimensions.borderWidthDefault,
         ),
       ),
       child: Column(

@@ -67,7 +67,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: Dimensions.buttonHeightDefault - 6,
       decoration: BoxDecoration(
         color: AppColors.authInputBackground,
         borderRadius: BorderRadius.circular(Dimensions.radiusSizeExtraLarge),
@@ -96,7 +96,7 @@ class _SearchBarState extends State<SearchBar> {
           suffixIcon: _hasText
               ? IconButton(
                   icon: Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
                     decoration: BoxDecoration(
                       color: AppColors.textHint.withOpacity(0.1),
                       shape: BoxShape.circle,
