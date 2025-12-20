@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import '../bloc/product_detail_bloc.dart';
 import '../bloc/product_detail_event.dart';
 import '../bloc/product_detail_state.dart';
@@ -9,6 +10,7 @@ import '../../../cart/presentation/bloc/cart_event.dart';
 import '../../../../core/utils/extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/dimensions.dart';
+import '../../../../core/widgets/toast.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final int productId;
@@ -49,6 +51,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.shopping_cart_outlined,
+              color: AppColors.textPrimary,
+            ),
+            onPressed: () => context.push('/cart'),
+          ),
+        ],
       ),
       body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
           builder: (context, state) {
@@ -230,22 +241,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         image: product.image,
                                       ),
                                     );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text(
-                                    'Product added to cart',
-                                    style: TextStyle(
-                                      color: AppColors.textWhite,
-                                    ),
-                                  ),
-                                  backgroundColor: AppColors.authPrimary,
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      Dimensions.radiusSizeDefault,
-                                    ),
-                                  ),
-                                  ),
+                                Toast.show(
+                                  context,
+                                  message: 'Added to cart',
+                                  icon: Icons.shopping_cart,
                                 );
                               },
                             icon: const Icon(
